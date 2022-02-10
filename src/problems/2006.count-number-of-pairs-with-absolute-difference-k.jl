@@ -1,8 +1,3 @@
-## @lc info=start
-# Date: 2022-02-09
-# link: [solution to 2006](https://leetcode-cn.com/problems/count-number-of-pairs-with-absolute-difference-k/solution/2006-chai-de-jue-dui-zhi-wei-k-de-shu-du-q6k9/)
-## @lc info=end
-
 ## @lc code=start
 using LeetCode
 
@@ -27,3 +22,8 @@ end
     @test count_difference([3,2,1,5,4], 2) == 3
 end
 ## @lc test=end
+
+## @lc info=start
+# Date: 2022-02-09
+# link: [solution to 2006](https://leetcode-cn.com/problems/count-number-of-pairs-with-absolute-difference-k/solution/2006-chai-de-jue-dui-zhi-wei-k-de-shu-du-q6k9/)
+## @lc info=end
