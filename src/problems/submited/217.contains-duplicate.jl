@@ -42,11 +42,7 @@ using LeetCode
 function contains_duplicate(nums::Vector{Int})::Bool
     hash_table = Int[]
     for i in nums
-        if !(i in hash_table)
-            push!(hash_table, i)
-        else
-            return true
-        end
+        !(i in hash_table) ? push!(hash_table, i) : return true
     end
     false
 end
