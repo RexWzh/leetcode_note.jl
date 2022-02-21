@@ -60,27 +60,22 @@
 ## @lc code=start
 using LeetCode
 function push_dominoes(dominoes::String)::String
-    n, res =  length(dominoes), [first(dominoes)]
-    while (len = length(res)) < n
-        println(join(res), "\t", dominoes)
-        if last(res) == '.'
-            i = findfirst(x -> x != '.', @view dominoes[len + 1:end])
-            i === nothing && return join(res) * @view dominoes[len + 1:end]
-            if dominoes[len + i] == 'L' 
-                append!(res, fill('L', i))
-            else
-                append!(res, fill('.', i - 1))
-                push!(res, 'R')
-            end
-        elseif last(res) == 'L'
-            push!(res, dominoes[len + 1])
-        else ## dominoes[len] == 'R'
-            i = findfirst(x -> x != '.', @view dominoes[len + 1:end])
-            i === nothing && return join(append!(res, fill('R', n - len)))
-            if dominoes[len + i] =='R'
+    n, res =  length(dominoes), []
+    while length(res) < n
+        pos = length(res) + 1
+        if dominoes[pos] == '.'
+            i = findfirst(x -> x != '.', @view dominoes[pos + 1:end])
+            i === nothing && return join(res) * @view dominoes[pos:end]
+            append!(res, dominoes[pos + i] == 'L' ? fill('L', i + 1) : fill('.', i))
+        elseif dominoes[pos] == 'L'
+            push!(res, 'L')
+        else ## dominoes[pos] == 'R'
+            i = findfirst(x -> x != '.', @view dominoes[pos + 1:end])
+            i === nothing && return join(append!(res, fill('R', n - pos + 1)))
+            if dominoes[pos + i] =='R'
                 append!(res, fill('R', i))
-            elseif dominoes[len + i] == 'L'
-                append!(res, fill('R', cld(i, 2) - 1))
+            elseif dominoes[pos + i] == 'L'
+                append!(res, fill('R', cld(i, 2)))
                 iseven(i) && push!(res, '.')
                 append!(res, fill('L', cld(i, 2)))
             end
@@ -88,6 +83,15 @@ function push_dominoes(dominoes::String)::String
     end
     return join(res)
 end
-                
-@test push_dominoes("RR.L") == "RR.L"
-@test push_dominoes(".L.R...LR..L..") == "LL.RR.LLRRLL.."
+
+## @lc test=start
+@testset "838.push-dominoes.jl" begin
+    @test push_dominoes("RR.L") == "RR.L"
+    @test push_dominoes(".L.R...LR..L..") == "LL.RR.LLRRLL.."
+    @test push_dominoes(".L.R.") == "LL.RR"
+end
+## @lc test=end
+
+## @lc info=start
+# link: [solution to 838](https://leetcode-cn.com/problems/push-dominoes/solution/pythonjuliazi-dong-ji-shuang-zhi-zhen-by-d4rb/)
+## @lc info=end
