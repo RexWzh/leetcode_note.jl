@@ -59,12 +59,13 @@ function is_valid_BST(root::TreeNode)::Bool
             push!(stack, root)
             root = root.left
         end
-        root = pop!(stack) ## inorder search
+        ## inorder traversal: put codes here
         root.val <= val && return false ## strictly increasing
         val, root = root.val, root.right
     end
     true
 end
+
 ## @lc code=end
 
 ## @lc test=start

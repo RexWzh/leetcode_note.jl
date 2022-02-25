@@ -64,7 +64,7 @@
 ## @lc code=start
 using LeetCode
 
-function loweset_common_ancestor_236(root::TreeNode{Int}, p::TreeNode{Int}, q::TreeNode{Int})::TreeNode{Int}
+function lowest_common_ancestor_236(root::TreeNode{Int}, p::TreeNode{Int}, q::TreeNode{Int})::TreeNode{Int}
     function dfs(node::Union{TreeNode{Int}, Nothing})
         (isnothing(node) || node == p || node == q) && return node
         left, right = dfs(node.left), dfs(node.right)
@@ -79,9 +79,9 @@ end
 ## @lc test=start
 @testset "236.lowest-common-ancestor-of-a-binary-tree.jl" begin
     root = TreeNode{Int}([3,5,1,6,2,0,8,nothing,nothing,7,4])
-    @test loweset_common_ancestor_236(root, root.left, root.left.right.right) == root.left
-    @test loweset_common_ancestor_236(root, root.left, root.right) == root
-    @test loweset_common_ancestor_236(TreeNode{Int}([1,2]), TreeNode{Int}([1,2]), TreeNode(2)) == TreeNode{Int}([1,2])
+    @test lowest_common_ancestor_236(root, root.left, root.left.right.right) == root.left
+    @test lowest_common_ancestor_236(root, root.left, root.right) == root
+    @test lowest_common_ancestor_236(TreeNode{Int}([1,2]), TreeNode{Int}([1,2]), TreeNode(2)) == TreeNode{Int}([1,2])
 end
 ## @lc test=end
 

@@ -61,16 +61,16 @@
 ## @lc code=start
 using LeetCode
 
-maximum_depth_of_binary_tree(::Nothing) = 0
-maximum_depth_of_binary_tree(root::TreeNode) = max(maximum_depth_of_binary_tree(root.left), maximum_depth_of_binary_tree(root.right)) + 1
+maximum_depth_of_btree(::Nothing) = 0
+maximum_depth_of_btree(root::TreeNode) = maximum(maximum_depth_of_btree, [root.left, root.right]) + 1
 ## @lc code=end
 
 ## @lc test=start
 @testset "104.maximum-depth-of-binary-tree.jl" begin
-    @test maximum_depth_of_binary_tree(TreeNode{Int}([3,9,20,nothing,nothing,15,7])) == 3
-    @test maximum_depth_of_binary_tree(TreeNode{Int}([1,nothing,2])) == 2
-    @test maximum_depth_of_binary_tree(nothing) == 0
-    @test maximum_depth_of_binary_tree(TreeNode{Int}([5])) == 1
+    @test maximum_depth_of_btree(TreeNode{Int}([3,9,20,nothing,nothing,15,7])) == 3
+    @test maximum_depth_of_btree(TreeNode{Int}([1,nothing,2])) == 2
+    @test maximum_depth_of_btree(nothing) == 0
+    @test maximum_depth_of_btree(TreeNode{Int}([5])) == 1
 end
 ## @lc test=end
 

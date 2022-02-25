@@ -81,22 +81,36 @@ using LeetCode
 
 inorder_traversal(::Nothing) = Int[]
 function inorder_traversal(root::TreeNode)::Vector{Int}
-    res, stack = Int[], [(root, -1)] ## -1 for left subtree, 1 for right subtree
-    while !isempty(stack)
-        cur = last(stack)
-        if last(cur) == -1 ## search left subtree
-            stack[end] = (cur[1], 1)
-            !isnothing(cur[1].left) && push!(stack, (cur[1].left, -1))
-        elseif last(cur) == 1 ## search right subtree
-            stack[end] = (cur[1], 0)
-            push!(res, cur[1].val) ## key part: push value here (inorder)
-            !isnothing(cur[1].right) && push!(stack, (cur[1].right, -1))
-        else
-            cur = pop!(stack)
+    res, stack = Int[], []
+    while !isempty(stack) || !isnothing(root)
+        while !isnothing(root)
+            push!(stack, root)
+            root = root.left
         end
+        root = pop!(stack) 
+        push!(res, root.val) ## inorder search
+        root = root.right
     end
-    return res
+    res
 end
+
+##### code template for inorder traversal and preorder traversal #####
+## traversal(::Nothing) = Int[]
+## function traversal(root::TreeNode)::Vector{Int}
+##     res, stack = Int[], []
+##     while !isempty(stack) || !isnothing(root)
+##         while !isnothing(root)
+##             push!(stack, root)
+##             ## preorder traversal: put codes here
+##             root = root.left
+##         end
+##         root = pop!(stack) 
+##         ## inorder traversal: put codes here
+##         root = root.right
+##     end
+##     res
+## end
+
 ## @lc code=end
 ## @lc test=start
 @testset "94.binary-tree-inorder-traversal.jl" begin

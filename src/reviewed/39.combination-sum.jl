@@ -86,8 +86,9 @@ function combination_sum_39(nums::Union{Vector{Int},SubArray}, target::Int)::Vec
     isempty(nums) && return Vector{Int}[]
     res, num = Vector{Int}[], nums[end]
     for i in 0:target ÷ num
-        new = [append!(vec, fill(num, i)) for vec in sorted_combination_sum(@view(nums[1:end-1]), target - i * num)]
-        res = cat(res, new; dims = 1)
+        for vec in combination_sum_39(@view(nums[1:end-1]), target - i * num)
+            append!(res, [append!(vec, fill(num, i))])
+        end
     end
     return res
 end
