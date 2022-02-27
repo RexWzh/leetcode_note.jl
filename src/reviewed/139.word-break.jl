@@ -49,24 +49,22 @@
 ## @lc code=start
 using LeetCode
 
-## BFS algorithm
+## BFS
 function word_break(s::String, word_dict::Vector{String})::Bool
-    valids = fill(false, length(s))
-    new, n = [0], length(s)
-    word_dict = sort(word_dict, by = x -> length(x))
-    while !isempty(new)
-        pos = popfirst!(new)
+    n, word_dict = length(s), sort(word_dict, by = x -> length(x))
+    valids, valid_pos = fill(false, n), [0]
+    while !isempty(valid_pos)
+        pos = popfirst!(valid_pos)
         for word in word_dict
-            new_pos = pos + length(word)
-            new_pos == n && s[pos + 1:new_pos] == word && return true
-            new_pos > n && break
-            if !valids[new_pos] && s[pos + 1:new_pos] == word
+            (new_pos = pos + length(word)) > n && break
+            new_pos == n && @view(s[pos + 1:new_pos]) == word && return true
+            if !valids[new_pos] && @view(s[pos + 1:new_pos]) == word
                 valids[new_pos] = true
-                push!(new, new_pos)
+                push!(valid_pos, new_pos)
             end
         end
     end
-    return false
+    false
 end
 ## @lc code=end
 ## @lc test=start
@@ -76,7 +74,7 @@ end
     @test word_break("applepenapple", ["apple", "pen"]) ==  true
     @test word_break("a", ["b"]) == false
     @test word_break("a" ^ 150 * "b", ["a"^i for i in 1:10]) == false
-    # @test word_break("bb", ["a","b","bbb","bbbb"]) = true
+    @test word_break("bb", ["a","b","bbb","bbbb"]) == true
 end
 ## @lc test=end
 

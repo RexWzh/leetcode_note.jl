@@ -46,11 +46,9 @@
 using LeetCode
 
 function min_falling_path_sum(matrix::Vector{Vector{Int}})::Int
-    line, n = copy(matrix[1]), length(matrix)
-    for i in 2:n
-        line = [matrix[i][j] + minimum(line[max(j - 1, 1):min(j + 1, n)]) for j in 1:n]
-    end
-    minimum(line)
+    n = length(matrix)
+    f(l1, l2) = [num + minimum(l1[max(i - 1, 1):min(i + 1,n)]) for (i, num) in enumerate(l2)]
+    minimum(foldl(f, matrix))
 end
 
 ## @lc code=end

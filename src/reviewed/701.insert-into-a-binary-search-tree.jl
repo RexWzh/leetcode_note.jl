@@ -68,7 +68,7 @@ function insert_into_bst(root::TreeNode, val::Int)::TreeNode
     else
         root.right = insert_into_bst(root.right, val)
     end
-    return root
+    root
 end
 
 ## @lc code=end

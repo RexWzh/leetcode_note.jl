@@ -48,28 +48,31 @@
 ## @lc code=start
 using LeetCode
 
-function flood_fill!(image::Vector{Vector{Int}}, sr::Int, sc::Int, new_color::Int)::Vector{Vector{Int}}
-    old_color, image[sr + 1][sc + 1] = image[sr + 1][sc + 1], new_color
+function flood_fill!(image::Matrix{Int}, sr::Int, sc::Int, new_color::Int)::Matrix{Int}
+    ind = CartesianIndex((sr + 1, sc + 1)) ## index correction
+    old_color, image[ind] = image[ind], new_color
     old_color == new_color && return image
-    m, n, queue = length(image), length(image[1]), [(sr + 1, sc + 1)]
+    inds, queue = CartesianIndices(image), [ind]
     while !isempty(queue)
-        x, y = popfirst!(queue)
-        for (i, j) in [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
-            if 1 <= i <= m && 1 <= j <= n && image[i][j] == old_color
-                image[i][j] = new_color
-                push!(queue, (i, j))
+        ind = popfirst!(queue)
+        for I in [(-1, 0), (1, 0), (0, -1), (0, 1)]
+            new_I = ind + CartesianIndex(I)
+            if new_I ∈ inds && image[new_I] == old_color
+                image[new_I] = new_color
+                push!(queue, new_I)
             end
         end
     end
     image
 end
+
 ## @lc code=end
 
 ## @lc test=start
 @testset "733.flood-fill.jl" begin
-    @test flood_fill!([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 1) == [[1,1,1],[1,1,0],[1,0,1]]
-    @test flood_fill!([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2) == [[2,2,2],[2,2,0],[2,0,1]]
-    @test flood_fill!([[0,0,0],[0,1,0]], 1, 1, 2) == [[0,0,0],[0,2,0]]
+    @test flood_fill!([[1,1,1] [1,1,0] [1,0,1]], 1, 1, 1) == [[1,1,1] [1,1,0] [1,0,1]]
+    @test flood_fill!([[1,1,1] [1,1,0] [1,0,1]], 1, 1, 2) == [[2,2,2] [2,2,0] [2,0,1]]
+    @test flood_fill!([[0,0,0] [0,1,0]], 1, 1, 2) == [[0,0,0] [0,2,0]]
 end
 ## @lc test=end
 

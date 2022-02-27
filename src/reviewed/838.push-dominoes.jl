@@ -59,29 +59,14 @@
 # 
 ## @lc code=start
 using LeetCode
+
 function push_dominoes(dominoes::String)::String
-    n, res =  length(dominoes), []
-    while length(res) < n
-        pos = length(res) + 1
-        if dominoes[pos] == '.'
-            i = findfirst(x -> x != '.', @view dominoes[pos + 1:end])
-            i === nothing && return join(res) * @view dominoes[pos:end]
-            append!(res, dominoes[pos + i] == 'L' ? fill('L', i + 1) : fill('.', i))
-        elseif dominoes[pos] == 'L'
-            push!(res, 'L')
-        else ## dominoes[pos] == 'R'
-            i = findfirst(x -> x != '.', @view dominoes[pos + 1:end])
-            i === nothing && return join(append!(res, fill('R', n - pos + 1)))
-            if dominoes[pos + i] =='R'
-                append!(res, fill('R', i))
-            elseif dominoes[pos + i] == 'L'
-                append!(res, fill('R', cld(i, 2)))
-                iseven(i) && push!(res, '.')
-                append!(res, fill('L', cld(i, 2)))
-            end
-        end
+    ans = ""
+    rules = ("R.L" => "T", ".L" => "LL", "R." => "RR", "T" => "R.L")
+    while dominoes != ans
+        ans, dominoes = dominoes, foldl(replace, [dominoes, rules...])
     end
-    return join(res)
+    ans
 end
 
 ## @lc test=start
