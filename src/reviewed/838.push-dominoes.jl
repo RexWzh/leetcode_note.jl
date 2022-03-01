@@ -64,10 +64,12 @@ function push_dominoes(dominoes::String)::String
     ans = ""
     rules = ("R.L" => "T", ".L" => "LL", "R." => "RR", "T" => "R.L")
     while dominoes != ans
-        ans, dominoes = dominoes, foldl(replace, [dominoes, rules...])
+        ans = dominoes
+        dominoes = foldl(replace, [dominoes, rules...])
     end
     ans
 end
+## @lc code=end
 
 ## @lc test=start
 @testset "838.push-dominoes.jl" begin
