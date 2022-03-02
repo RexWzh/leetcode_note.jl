@@ -93,7 +93,21 @@ function maximum_requests(::Int, requests::Vector{Vector{Int}})::Int
     ans
 end
 ## @lc code=end
-
+function maximum_requests(n, requests::Vector{Vector{Int}})
+    m = length(requests)
+    res = 0
+    net_trans = fill(0, n)
+    for i in 0:((1 << m) - 1) 
+        for j in 0:m-1
+            (i & (1 << j)) == 0 && continue
+            net_trans[requests[j + 1][1] + 1] += 1
+            net_trans[requests[j + 1][2] + 1] -= 1
+        end
+        all(iszero, net_trans) && (res = max(res, count_ones(i)))
+        fill!(net_trans, 0)
+    end
+    res
+end
 ## @lc test=start
 @testset "1601.maximum-number-of-achievable-transfer-requests.jl" begin
     @test maximum_requests(5, [[0,1],[1,0],[0,1],[1,2],[2,0],[3,4]]) == 5
