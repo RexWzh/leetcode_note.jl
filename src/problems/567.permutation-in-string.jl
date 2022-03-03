@@ -42,31 +42,22 @@
 # 
 ## @lc code=start
 using LeetCode
-using DataStructures
 
-## Double Pointers
+using DataStructures
 function check_inclusion(s1::String, s2::String)::Bool
-    count1, count2 = counter(s1), DefaultDict{Char, Int}(0)
-    start, left = true, 1
-    for (i, c) in enumerate(s2)
-        if !haskey(count1, c)
-            start, count2 = true, DefaultDict{Char, Int}(0)
-        elseif count2[c] == count1[c]
-            pos = findfirst(c, @view s2[left:i - 1])
-            for i in 1:pos
-                count2[s2[left + i - 1]] -= 1
-            end
-            left += pos
-        else
-            start && (start = false; left = i)
-            count2[c] += 1
-            all(count1[key] == count2[key] for key in keys(count1)) && return true
-        end
+    equal2c1(c::Accumulator) = all(c[i]==c1[i] for i in keys(c1))
+    c1, n1, n2 = counter(s1), length(s1), length(s2)
+    n2 < n1 && return false
+    c2 = counter(@view(s2[1:n1]))
+    equal2c1(c2) && return true 
+    for (i, j) in zip(@view(s2[1:(n2 - n1)]), @view(s2[n1 + 1: n2]))
+        c2[i] -= 1
+        c2[j] += 1
+        equal2c1(c2) && return true 
     end
-    return false
+    false
 end
 ## @lc code=end
-
 
 ## @lc test=start
 @testset "567.permutation-in-string.jl" begin
@@ -74,6 +65,7 @@ end
     @test check_inclusion("ab", "eidbaooo") == true
     @test check_inclusion("ab", "eidboaoo") == false
     @test check_inclusion("hello", "ooolleoooleh") == false
+    @test check_inclusion("adc", "dcda") == true
 end
 ## @lc test=end
 

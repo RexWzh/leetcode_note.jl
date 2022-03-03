@@ -5,7 +5,8 @@ function get_title(title::String)
     title = strip(title) # 去除空格等字符
     # !' ' in title && return title # 已处理过
     ind, name = split(title, '.')
-    name = replace(strip(name), ' ' => '-')
+    name = replace(strip(name), r"[^ \w]" => "")
+    name = lowercase(replace(name, ' ' => '-'))
     println("Title name: $ind.$name.jl")
     ind, name
 end
