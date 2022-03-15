@@ -47,13 +47,13 @@
 # 
 ## @lc code=start
 using LeetCode
-function validate_stack_sequences(pushed::Vector{Int}, popped::Vector{Int})::Bool
-    stack, i, n = [], 1, length(pushed)
+validate_stack_sequences(pushed::Vector{Int}, popped::Vector{Int}) = validate_stack_sequences!(copy(pushed), popped)
+function validate_stack_sequences!(pushed::Vector{Int}, popped::Vector{Int})::Bool
+    stack = Int[]
     for num in popped
         while isempty(stack) || last(stack) != num
-            i > n && return false
-            push!(stack, pushed[i])
-            i += 1
+            isempty(pushed) && return false
+            push!(stack, popfirst!(pushed))
         end
         pop!(stack)
     end

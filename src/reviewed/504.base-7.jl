@@ -35,9 +35,9 @@ using LeetCode
 
 function convert_to_base7(num::Int)::String
     num == 0 && return "0"
-    res = Int[]
     sign = num < 0 ? -1 : 1
     num *= sign
+    res = Int[]
     while num > 0
         push!(res, num % 7)
         num ÷= 7
