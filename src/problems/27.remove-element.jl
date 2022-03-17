@@ -73,7 +73,7 @@
 ## @lc code=start
 using LeetCode
 
-remove_element!(nums::Vector{Int}, val::Int) = length(deleteat!(nums, findall(==(val), nums)))
+remove_element!(nums::Vector{Int}, val::Int) = length(filter!(!=(val), nums))
 ## @lc code=end
 
 ## @lc test=start
