@@ -18,7 +18,7 @@ function get_info(body::AbstractString)
         (func = match(func_reg2, line)) ≢ nothing && push!(funcs, func.captures[1])
     end
     ## 获取信息部分
-    author = match(r"# author: (\w+)", body).captures[1]
+    author = match(r"# author: ([\w ]+)", body).captures[1]
     date = match(r"# date: ([\w-]+)", body).captures[1]
     any(isempty, [date, author]) && throw("未检索到信息！")
     (code, unique!(funcs)), (author, date)
