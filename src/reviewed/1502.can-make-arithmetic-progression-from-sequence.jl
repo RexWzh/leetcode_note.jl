@@ -47,7 +47,7 @@
 ## @lc code=start
 using LeetCode
 
-can_make_arith(arr::Vector{Int})::Bool = length(unique(diff(sort(arr)))) == 1
+can_make_arith(arr::Vector{Int})::Bool = length(unique!(diff(sort(arr)))) == 1
 
 ## @lc code=end
 

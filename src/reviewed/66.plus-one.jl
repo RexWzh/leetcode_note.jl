@@ -63,8 +63,8 @@ plus_one(nums::Vector{Int}) = reverse!(digits(foldl((i,j)->10*i+j, nums) + 1))
 digits_plus_one(nums::Vector{Int}) = digits_plus_one!(copy(nums))
 function digits_plus_one!(nums::Vector{Int})::Vector{Int}
     pos = findlast(!=(9), nums)
-    isnothing(pos) && return append!([1], fill(0, length(nums)))
-    nums[pos + 1:end] = fill(0, length(nums) - pos)
+    isnothing(pos) && return append!([1], zeros(Int, length(nums)))
+    nums[pos + 1:end] = zeros(Int, length(nums) - pos)
     nums[pos] += 1
     nums
 end
@@ -73,8 +73,8 @@ end
 
 ## @lc test=start
 @testset "66.plus-one.jl" begin
-    rvdigits = i->reverse(digits(i))
-    @test all(digits_plus_one(rvdigits(i))==rvdigits(i+1) for i in 0:1000)
+    rvdigits = i -> reverse!(digits(i))
+    @test all(digits_plus_one(rvdigits(i)) == rvdigits(i+1) for i in 0:1000)
     @test digits_plus_one([9,9,9,9]) == [1, 0, 0, 0, 0]
     @test all(plus_one(rvdigits(i)) == rvdigits(i+1) for i in 0:1000)
     @test plus_one([9,9,9,9]) == [1, 0, 0, 0, 0]
