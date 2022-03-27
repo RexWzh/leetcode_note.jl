@@ -28,12 +28,12 @@ end
 ## 检查脚本位置 ##
 cd(Base.source_dir()[1:end-5])
 current_files = readdir()
-!all(file in current_files for file in ["src", "tools"]) && throw("脚本文件位置有误")
+!all(file in current_files for file in ["src", "tools"]) && throw("脚本位置有误")
 ## 获取主仓库文件信息 ##
 println("检查主仓库的函数信息")
 main_problem_path = "../LeetCode.jl/src/problems/"
 main_problems = readdir(main_problem_path)
-isempty(main_problems) && throw("未能读取到主仓库文件")
+isempty(main_problems) && throw("未能读取到主仓库文件，脚本位置有误")
 deleteat!(main_problems, length(main_problems)) ## 忽略 problems.jl
 sort!(main_problems; by=i -> parse(Int, split(i, '.')[1]))
 total_num = length(main_problems)
@@ -46,7 +46,6 @@ for file in main_problems
     push!(main_texts, read(open(main_problem_path * file, "r"), String))
     _, (author, _) = get_info(main_texts[end])
 end 
-println("读取完毕，共 $(total_num) 个文件")
 
 ### 统计作者和次数 ###
 authors = Dict{String, Int}()
@@ -59,8 +58,11 @@ for text in main_texts
     end
 end
 
-println("共 $(length(authors)) 个作者提交了解答：\nauthor | submit numbers\n")
+println("读取完毕，共 $(total_num) 个文件，共 $(length(authors)) 个作者提交了解答：")
+println("
+| author \t| number of commits |
+| :----: \t| :--------------: |")
 for (author, i) in authors
-    println("$author: $i")
+    println("| $author \t| $i |")
 end
 

@@ -82,3 +82,21 @@ function merge_sorted(lpart::AbstractArray{T}, rpart::AbstractArray{T})::Abstrac
     end
     combined
 end
+
+## 二叉树遍历
+## 先序遍历 + 中序遍历
+traversal(::Nothing) = Int[]
+function traversal(root::TreeNode)::Vector{Int}
+    res, stack = Int[], []
+    while !isempty(stack) || !isnothing(root)
+        while !isnothing(root)
+            push!(stack, root)
+            ## preorder traversal
+            root = root.left
+        end
+        root = pop!(stack) 
+        ## inorder traversal
+        root = root.right
+    end
+    res
+end
