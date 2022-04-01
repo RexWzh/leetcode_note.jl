@@ -62,7 +62,7 @@ function nest_while_list(f::Function, val::T, chk::Function)::Vector{T} where T
     res
 end
 
-trailing_zeroes(n::Int) = sum(nest_while_list(i->i÷5, n÷5, >=(5)))
+trailing_zeroes(n::Int) = sum(nest_while_list(i->i÷5, n÷5, >(1)))
 ## equivalent to the following
 ## function trailing_zeroes(n::Int)::Int
 ##     res = 0
