@@ -61,7 +61,7 @@ function image_smoother(img::Matrix{Int})::Matrix{Int}
         x2 = i < m ? i + 1 : i
         y2 = j < n ? j + 1 : j
         idx1, idx2, idx3, idx4 = CartesianIndex.([(x1, y1), (x1, y2), (x2, y1), (x2, y2)])
-        area = presum[idx4] - (idx2 ∈ indices && presum[idx2]) - (idx3 ∈ indices && presum[idx3]) + (idx1 in indices && presum[idx1])
+        area = presum[idx4] - (idx2 ∈ indices && presum[idx2]) - (idx3 ∈ indices && presum[idx3]) + (idx1 ∈ indices && presum[idx1])
         res[i, j] = area ÷ prod((idx4 - idx1).I)
     end
     res

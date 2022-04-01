@@ -50,31 +50,50 @@
 using LeetCode
 
 ## BFS
-function word_break(s::String, word_dict::Vector{String})::Bool
-    n, word_dict = length(s), sort!(word_dict, by = x -> length(x))
+function word_break_bfs(s::String, word_dict::Vector{String})::Bool
+    n, word_dict = length(s), sort!(word_dict; by=x -> length(x))
     valids, valid_pos = fill(false, n), [0]
     while !isempty(valid_pos)
         pos = popfirst!(valid_pos)
         for word in word_dict
             (new_pos = pos + length(word)) > n && break
-            new_pos == n && s[pos + 1:new_pos] == word && return true
-            if !valids[new_pos] && s[pos + 1:new_pos] == word
+            new_pos == n && s[(pos + 1):new_pos] == word && return true
+            if !valids[new_pos] && s[(pos + 1):new_pos] == word
                 valids[new_pos] = true
                 push!(valid_pos, new_pos)
             end
         end
     end
-    false
+    return false
+end
+
+## Dynamic Programming
+function word_break(s::String, word_dict::Vector{String})::Bool
+    lens = sort!(unique!(length.(word_dict)))
+    dp = append!([true], fill(false, length(s)))
+    for i in eachindex(dp)
+        for len in lens
+            i > len || break
+            dp[i - len] && s[(i - len):(i - 1)] ∈ word_dict && (dp[i] = true)
+        end
+    end
+    return last(dp)
 end
 ## @lc code=end
 ## @lc test=start
 @testset "139.word-break.jl" begin
-    @test word_break("leetcode", ["leet","code"]) == true
-    @test word_break("catsandog", ["cats", "dog", "sand", "and", "cat"]) == false
-    @test word_break("applepenapple", ["apple", "pen"]) ==  true
-    @test word_break("a", ["b"]) == false
-    @test word_break("a" ^ 150 * "b", ["a"^i for i in 1:10]) == false
-    @test word_break("bb", ["a","b","bbb","bbbb"]) == true
+    tcase1 = ("leetcode", ["leet", "code"])
+    tcase2 = ("applepenapple", ["apple", "pen"])
+    tcase3 = ("bb", ["a", "b", "bbb", "bbbb"])
+    fcase1 = ("catsandog", ["cats", "dog", "sand", "and", "cat"])
+    fcase2 = ("a", ["b"])
+    fcase3 = ("a"^150 * "b", ["a"^i for i in 1:10])
+    @test word_break(tcase1...) && word_break_bfs(tcase1...)
+    @test word_break(tcase2...) && word_break_bfs(tcase2...)
+    @test word_break(tcase3...) && word_break_bfs(tcase3...)
+    @test !word_break(fcase1...) && !word_break_bfs(fcase1...)
+    @test !word_break(fcase2...) && !word_break_bfs(fcase2...)
+    @test !word_break(fcase3...) && !word_break_bfs(fcase3...)
 end
 ## @lc test=end
 
