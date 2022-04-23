@@ -26,7 +26,7 @@ end
 ### 检查和准备阶段 ###
 cd(Base.source_dir()[1:end-5])
 current_files = readdir()
-!all(file in current_files for file in ["src", "tools"]) && throw("脚本文件位置有误")
+!all(file in current_files for file in ["src", "tools"]) && throw("Script file misplacing: could not find source path `src/`")
 
 problem_path = "submit/problems/"
 test_path = "submit/test/"

@@ -11,7 +11,7 @@ function get_info(body::AbstractString)
     code = code.captures[1]
     ## 获取函数内容
     func_reg1 = r"^function (\w+!?\([\w:{}, ]*\))"
-    func_reg2 = r"^(\w+!?\([\w:{}, ]*\))[\w: ]*="
+    func_reg2 = r"^(\w+!?\([\w:{}, ]*\))[\w: ]*=" ## one-line function
     funcs = String[]
     for line in split(code, '\n')
         (func = match(func_reg1, line)) ≢ nothing && push!(funcs, func.captures[1])
@@ -21,7 +21,7 @@ function get_info(body::AbstractString)
     author = match(r"# author: ([\w ]+)", body).captures[1]
     date = match(r"# date: ([\w-]+)", body).captures[1]
     any(isempty, [date, author]) && throw("未检索到信息！")
-    (code, unique!(funcs)), (author, date)
+    return (code, unique!(funcs)), (author, date)
 end
 
 ### 检查和准备阶段 ###
